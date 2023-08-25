@@ -1,4 +1,5 @@
-import "./styles.css";
+import { useState } from "react";
+import "./style.css";
 
 export default function App() {
   return (
@@ -34,6 +35,32 @@ export default function App() {
   );
 }
 
-function TextExpander() {
-  return <div>TODO</div>;
+function TextExpander({
+  children,
+  className = "",
+  collapsedNumWords = 110,
+  expandButtonText = "Show more",
+  collapseButtonText = "Show less",
+  expanded = false,
+  buttonColor = "#323232",
+}) {
+  const [isOpen, setIsOpen] = useState(expanded);
+
+  const btnStyling = {
+    color: buttonColor,
+  };
+
+  return (
+    <p className={className}>
+      {isOpen
+        ? children
+        : children
+            .split("")
+            .filter((letter, i) => i + 1 < collapsedNumWords)
+            .join("") + "..."}
+      <button style={btnStyling} onClick={() => setIsOpen((isOpen) => !isOpen)}>
+        {isOpen ? collapseButtonText : expandButtonText}
+      </button>
+    </p>
+  );
 }
